@@ -1,25 +1,14 @@
-//
-//  DateExtensions Tests.swift
-//  DateExtensions
-//
-//  Created by Coen ten Thije Boonkkamp on 26/07/2025.
-//
-
 import Dependencies
 import Dependencies_Test_Support
 import Foundation
 import Foundation_Dependencies
 import Testing
 
-// MARK: - Main Test Suite
-
 @Suite(
 
     .dependency(\.calendar, Calendar.current)
 )
 struct Test {
-
-    // MARK: - Date Initialization Tests
 
     @Suite
     struct `Date Initialization` {
@@ -63,8 +52,6 @@ struct Test {
             #expect(Date(year: 2025, month: 1, day: 1, minute: 60) == nil)
         }
     }
-
-    // MARK: - DateComponents Integer Extensions Tests
 
     @Suite
     struct `DateComponents Integer Extensions` {
@@ -120,8 +107,6 @@ struct Test {
         }
     }
 
-    // MARK: - Date Arithmetic Tests
-
     @Suite
     struct `Date Arithmetic` {
 
@@ -165,8 +150,6 @@ struct Test {
         }
     }
 
-    // MARK: - Date Comparison Tests
-
     @Suite
     struct `Date Comparison` {
 
@@ -193,8 +176,6 @@ struct Test {
         }
     }
 
-    // MARK: - Date Component Access Tests
-
     @Suite
     struct `Date Component Access` {
 
@@ -212,9 +193,9 @@ struct Test {
 
         @Test
         func `Weekday component works correctly`() async throws {
-            // July 26, 2025 is a Saturday
+
             let saturday = Date(year: 2025, month: 7, day: 26)!
-            #expect(saturday.weekday == 7)  // Saturday = 7 in Calendar
+            #expect(saturday.weekday == 7)
         }
 
         @Test
@@ -227,14 +208,12 @@ struct Test {
         }
     }
 
-    // MARK: - Weekend Tests
-
     @Suite
     struct `Weekend Functionality` {
 
         @Test
         func `Weekend detection works correctly`() async throws {
-            // July 26, 2025 is a Saturday
+
             let saturday = Date(year: 2025, month: 7, day: 26)!
             let sunday = Date(year: 2025, month: 7, day: 27)!
             let monday = Date(year: 2025, month: 7, day: 28)!
@@ -249,8 +228,7 @@ struct Test {
             let friday = Date(year: 2025, month: 7, day: 25)!
             let nextWeekday = friday.nextWeekday
 
-            // Next weekday after Friday should be Monday
-            #expect(nextWeekday.weekday == 2)  // Monday = 2
+            #expect(nextWeekday.weekday == 2)
             #expect(!nextWeekday.isWeekend)
         }
 
@@ -260,39 +238,35 @@ struct Test {
 
             let nextWorkday = saturday.ifWeekendThenNextWorkday()
             #expect(!nextWorkday.isWeekend)
-            #expect(nextWorkday.weekday == 2)  // Monday
+            #expect(nextWorkday.weekday == 2)
 
             let previousWorkday = saturday.ifWeekendThenPreviousWorkday()
             #expect(!previousWorkday.isWeekend)
-            #expect(previousWorkday.weekday == 6)  // Friday
+            #expect(previousWorkday.weekday == 6)
         }
     }
-
-    // MARK: - Weekday Navigation Tests
 
     @Suite
     struct `Weekday Navigation` {
 
         @Test
         func `Next weekday navigation works correctly`() async throws {
-            let monday = Date(year: 2025, month: 7, day: 28)!  // Monday
+            let monday = Date(year: 2025, month: 7, day: 28)!
 
-            let nextWednesday = try #require(monday.next(4))  // Wednesday = 4
+            let nextWednesday = try #require(monday.next(4))
             #expect(nextWednesday.weekday == 4)
             #expect(nextWednesday > monday)
         }
 
         @Test
         func `Previous weekday navigation works correctly`() async throws {
-            let friday = Date(year: 2025, month: 7, day: 25)!  // Friday
+            let friday = Date(year: 2025, month: 7, day: 25)!
 
-            let previousWednesday = try #require(friday.previous(4))  // Wednesday = 4
+            let previousWednesday = try #require(friday.previous(4))
             #expect(previousWednesday.weekday == 4)
             #expect(previousWednesday < friday)
         }
     }
-
-    // MARK: - Date Calculation Tests
 
     @Suite
     struct `Date Calculations` {
@@ -311,26 +285,24 @@ struct Test {
 
         @Test
         func `Business days calculation works correctly`() async throws {
-            let monday = Date(year: 2025, month: 7, day: 28)!  // Monday
+            let monday = Date(year: 2025, month: 7, day: 28)!
 
             let fiveBusinessDaysLater = monday.addingBusinessDays(5)
-            #expect(fiveBusinessDaysLater.weekday == 2)  // Should be next Monday
+            #expect(fiveBusinessDaysLater.weekday == 2)
 
             let fiveBusinessDaysEarlier = monday.addingBusinessDays(-5)
-            #expect(fiveBusinessDaysEarlier.weekday == 2)  // Should be previous Monday
+            #expect(fiveBusinessDaysEarlier.weekday == 2)
         }
 
         @Test
         func `Business days skip weekends correctly`() async throws {
-            let friday = Date(year: 2025, month: 7, day: 25)!  // Friday
+            let friday = Date(year: 2025, month: 7, day: 25)!
 
             let oneBusinessDayLater = friday.addingBusinessDays(1)
-            #expect(oneBusinessDayLater.weekday == 2)  // Should be Monday, skipping weekend
+            #expect(oneBusinessDayLater.weekday == 2)
             #expect(!oneBusinessDayLater.isWeekend)
         }
     }
-
-    // MARK: - Month Boundary Tests
 
     @Suite
     struct `Month Boundaries` {
@@ -352,22 +324,20 @@ struct Test {
 
             #expect(lastDay.year == 2025)
             #expect(lastDay.month == 7)
-            #expect(lastDay.day == 31)  // July has 31 days
+            #expect(lastDay.day == 31)
         }
 
         @Test
         func `February last day calculation handles leap years`() async throws {
-            let feb2024 = Date(year: 2024, month: 2, day: 15)!  // 2024 is leap year
+            let feb2024 = Date(year: 2024, month: 2, day: 15)!
             let lastDayLeap = feb2024.lastDayOfMonth
             #expect(lastDayLeap.day == 29)
 
-            let feb2025 = Date(year: 2025, month: 2, day: 15)!  // 2025 is not leap year
+            let feb2025 = Date(year: 2025, month: 2, day: 15)!
             let lastDayRegular = feb2025.lastDayOfMonth
             #expect(lastDayRegular.day == 28)
         }
     }
-
-    // MARK: - Age Calculation Tests
 
     @Suite
     struct `Age Calculation` {
@@ -387,19 +357,17 @@ struct Test {
             let referenceDate = Date(year: 2025, month: 1, day: 1)!
 
             let age = birthDate.age(at: referenceDate)
-            #expect(age == 24)  // Birthday hasn't occurred yet in reference year
+            #expect(age == 24)
         }
 
         @Test
         func `Age calculation with current date`() async throws {
             let birthDate = Date(year: 2000, month: 1, day: 1)!
-            let age = birthDate.age()  // Uses current date
+            let age = birthDate.age()
 
-            #expect(age >= 25)  // Should be at least 25 in 2025
+            #expect(age >= 25)
         }
     }
-
-    // MARK: - DateComponents Arithmetic Tests
 
     @Suite
     struct `DateComponents Arithmetic` {
@@ -452,8 +420,6 @@ struct Test {
         }
     }
 
-    // MARK: - DateFormatter Tests
-
     @Suite
     struct `DateFormatter Extensions` {
 
@@ -478,9 +444,6 @@ struct Test {
         }
     }
 
-    // MARK: - StringDateFormat Tests
-
-    //    @available(macOS 12.0, iOS 15.0, tvOS 15.0, watchOS 8.0, *)
     @Suite
     struct `String Date Format` {
 
@@ -505,18 +468,16 @@ struct Test {
         }
     }
 
-    // MARK: - Edge Cases Tests
-
     @Suite
     struct `Edge Cases` {
 
         @Test
         func `Leap year handling works correctly`() async throws {
             let leapDay2024 = Date(year: 2024, month: 2, day: 29)
-            #expect(leapDay2024 != nil)  // 2024 is leap year
+            #expect(leapDay2024 != nil)
 
             let invalidLeapDay2025 = Date(year: 2025, month: 2, day: 29)
-            #expect(invalidLeapDay2025 == nil)  // 2025 is not leap year
+            #expect(invalidLeapDay2025 == nil)
         }
 
         @Test
@@ -524,7 +485,6 @@ struct Test {
             let jan31 = Date(year: 2025, month: 1, day: 31)!
             let nextMonth = jan31 + 1.month
 
-            // Adding 1 month to Jan 31 should give Feb 28 (or 29 in leap year)
             #expect(nextMonth.month == 2)
             #expect(nextMonth.day <= 29)
         }
@@ -538,8 +498,6 @@ struct Test {
         }
     }
 
-    // MARK: - Safe Arithmetic Tests
-
     @Suite
     struct `Safe Arithmetic Methods` {
 
@@ -551,7 +509,6 @@ struct Test {
             #expect(result != nil)
             #expect(result?.day == 2)
 
-            // Test with valid components
             let complexResult = baseDate.adding(1.year + 6.months + 2.days)
             #expect(complexResult != nil)
             #expect(complexResult?.year == 2026)
@@ -567,15 +524,12 @@ struct Test {
             #expect(result != nil)
             #expect(result?.day == 14)
 
-            // Test with valid components
             let complexResult = baseDate.subtracting(1.month + 5.days)
             #expect(complexResult != nil)
             #expect(complexResult?.month == 1)
             #expect(complexResult?.day == 10)
         }
     }
-
-    // MARK: - Date Boundaries Tests
 
     @Suite
     struct `Date Boundaries` {
@@ -603,7 +557,7 @@ struct Test {
 
         @Test
         func `Start and end of week work correctly`() async throws {
-            let midWeek = Date(year: 2025, month: 7, day: 30)!  // Wednesday
+            let midWeek = Date(year: 2025, month: 7, day: 30)!
 
             let startOfWeek = midWeek.startOfWeek
             let endOfWeek = midWeek.endOfWeek
@@ -655,8 +609,6 @@ struct Test {
             #expect(endOfYear.second == 59)
         }
     }
-
-    // MARK: - Date State Tests
 
     @Suite
     struct `Date State Checks` {
@@ -716,14 +668,12 @@ struct Test {
 
             let nextMonth = now + 1.month
             #expect(!nextMonth.isThisMonth)
-            #expect(nextMonth.isThisYear)  // Still same year
+            #expect(nextMonth.isThisYear)
 
             let nextYear = now + 1.year
             #expect(!nextYear.isThisYear)
         }
     }
-
-    // MARK: - Performance Tests
 
     @Suite
     struct `Performance` {
@@ -732,30 +682,26 @@ struct Test {
         func `Date component access is efficient`() async throws {
             let testDate = Date()
 
-            // This should not cause any performance issues
             for _ in 0..<1000 {
                 let _ = testDate.year
                 let _ = testDate.month
                 let _ = testDate.day
             }
 
-            #expect(true)  // If we get here, performance is acceptable
+            #expect(true)
         }
 
         @Test
         func `Date arithmetic is efficient`() async throws {
             let baseDate = Date()
 
-            // This should not cause any performance issues
             for i in 0..<100 {
                 let _ = baseDate + i.days
             }
 
-            #expect(true)  // If we get here, performance is acceptable
+            #expect(true)
         }
     }
-
-    // MARK: - Component Properties Tests
 
     @Suite
     struct `Component Properties` {
@@ -776,8 +722,6 @@ struct Test {
             #expect(timeZone == Calendar.current.timeZone)
         }
     }
-
-    // MARK: - DateComponents Validation Tests
 
     @Suite
     struct `DateComponents Validation` {
@@ -826,17 +770,13 @@ struct Test {
         func `Calendar-specific validation works correctly`() async throws {
             let calendar = Calendar.current
 
-            // Valid components should pass calendar validation
             let validComponents = DateComponents(year: 2025, month: 2, day: 15)
             #expect(validComponents.isValid(for: calendar))
 
-            // Valid leap day in leap year should pass calendar validation
             let validLeapDay = DateComponents(year: 2024, month: 2, day: 29)
-            #expect(validLeapDay.isValid(for: calendar))  // 2024 is a leap year
+            #expect(validLeapDay.isValid(for: calendar))
         }
     }
-
-    // MARK: - TimeInterval Extensions Tests
 
     @Suite
     struct `TimeInterval Extensions` {
@@ -878,8 +818,6 @@ struct Test {
             #expect((604900.0).formattedDuration == "1.0w")
         }
     }
-
-    // MARK: - Relative Date Formatting Tests
 
     @Suite
     struct `Relative Date Formatting` {
@@ -928,14 +866,12 @@ struct Test {
         func `Relative formatted property works correctly`() async throws {
             let now = Date()
 
-            // Test yesterday/tomorrow - most reliable
             let yesterday = now - 1.day
             let tomorrow = now + 1.day
 
             #expect(yesterday.relativeFormatted == "yesterday")
             #expect(tomorrow.relativeFormatted == "tomorrow")
 
-            // Test that various time periods return non-empty strings
             let oneHourAgo = now - 1.hour
             let oneHourFromNow = now + 1.hour
             let lastWeek = now - 8.days
@@ -946,7 +882,6 @@ struct Test {
             #expect(!lastWeek.relativeFormatted.isEmpty)
             #expect(!nextWeek.relativeFormatted.isEmpty)
 
-            // Verify past vs future have different formats
             #expect(oneHourAgo.relativeFormatted != oneHourFromNow.relativeFormatted)
         }
 
@@ -968,8 +903,6 @@ struct Test {
         }
     }
 }
-
-// MARK: - Test Extensions for missing DateComponents
 
 extension Int {
     fileprivate var weeks: DateComponents { DateComponents(weekOfYear: self) }

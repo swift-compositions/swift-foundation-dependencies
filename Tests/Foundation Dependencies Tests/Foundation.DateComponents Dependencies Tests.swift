@@ -1,11 +1,3 @@
-//
-//  DateComponents.IsValid Tests.swift
-//  DateExtensions Tests
-//
-//  Regression tests for fable-448 F-001: DateComponents.isValid(for:) must
-//  implement its documented calendar validation semantics.
-//
-
 import Dependencies
 import Dependencies_Test_Support
 import Foundation
@@ -39,7 +31,7 @@ extension DateComponents.Test.`Edge Case` {
 
     @Test
     func `isValid(for:) rejects February 29 in a non-leap year`() {
-        // Documented example: 2025 is not a leap year.
+
         let components = DateComponents(year: 2025, month: 2, day: 29)
         #expect(!components.isValid(for: Calendar(identifier: .gregorian)))
     }
@@ -58,8 +50,7 @@ extension DateComponents.Test.`Edge Case` {
 
     @Test
     func `isValid(for:) validates offset-style components by range only`() {
-        // No positional anchor (year / yearForWeekOfYear): offset-style,
-        // range validation only.
+
         let offset = DateComponents(month: 5, day: 12)
         #expect(offset.isValid(for: Calendar(identifier: .gregorian)))
     }

@@ -1,29 +1,19 @@
-//
-//  ReadmeVerificationTests.swift
-//  swift-foundation-extensions
-//
-//  Created for README verification
-//
-
 import Dependencies
 import Dependencies_Test_Support
 import Foundation
 import Foundation_Dependencies
 import Testing
 
-/// Tests that verify all code examples in README.md compile and work correctly
 @Suite(
     .dependency(\.calendar, Calendar.current)
 )
 struct `Readme Verification` {
 
-    // MARK: - Quick Start - DateExtensions
-
     @Test
     func `Quick Start: Date creation`() async throws {
-        // Create dates safely
+
         let date = Date(year: 2025, month: 7, day: 26)!
-        let invalidDate = Date(year: 2025, month: 2, day: 30)  // Returns nil
+        let invalidDate = Date(year: 2025, month: 2, day: 30)
 
         #expect(date.year == 2025)
         #expect(date.month == 7)
@@ -35,7 +25,6 @@ struct `Readme Verification` {
     func `Quick Start: Date arithmetic`() async throws {
         let baseDate = Date(year: 2025, month: 1, day: 1)!
 
-        // Date arithmetic
         let tomorrow = baseDate + 1.day
         let nextWeek = baseDate + 1.weekOfYear
         let complex = baseDate + 1.year + 6.months + 2.days
@@ -50,7 +39,6 @@ struct `Readme Verification` {
     func `Quick Start: Date boundaries`() async throws {
         let date = Date(year: 2025, month: 7, day: 26, hour: 12)!
 
-        // Date boundaries
         let startOfDay = date.startOfDay
         let endOfMonth = date.endOfMonth
         let startOfYear = date.startOfYear
@@ -65,15 +53,13 @@ struct `Readme Verification` {
     func `Quick Start: State checks`() async throws {
         let today = Date()
 
-        // State checks
-        #expect(today.isToday == true)  // Should always be true for Date()
+        #expect(today.isToday == true)
     }
 
     @Test
     func `Quick Start: Relative formatting`() async throws {
         let now = Date()
 
-        // Relative formatting
         let pastDate = now - 2.hours
         let relativeString = pastDate.relativeFormatted
         #expect(relativeString.contains("hour"))
@@ -83,23 +69,19 @@ struct `Readme Verification` {
         #expect(futureString.contains("day"))
     }
 
-    // MARK: - Quick Start - FoundationExtensions
-
     @Test
     func `Quick Start: Safe array subscripting`() async throws {
         let array = [1, 2, 3]
-        let value = array[safe: 5]  // Returns nil instead of crashing
-        let validValue = array[safe: 1]  // Returns 2
+        let value = array[safe: 5]
+        let validValue = array[safe: 1]
 
         #expect(value == nil)
         #expect(validValue == 2)
     }
 
-    // MARK: - Usage Examples - Date Creation
-
     @Test
     func `Usage: Date creation basic`() async throws {
-        // Basic creation
+
         let date1 = Date(year: 2025, month: 7, day: 26)
         let date2 = Date(year: 2025, month: 12, day: 25, hour: 15, minute: 30, second: 45)
 
@@ -112,23 +94,20 @@ struct `Readme Verification` {
 
     @Test
     func `Usage: Date validation`() async throws {
-        // Validation - returns nil for invalid dates
-        let invalid1 = Date(year: 2025, month: 13, day: 1)  // nil - invalid month
-        let invalid2 = Date(year: 2025, month: 2, day: 30)  // nil - Feb doesn't have 30 days
-        let invalid3 = Date(year: 2025, month: 1, day: 1, hour: 25)  // nil - invalid hour
+
+        let invalid1 = Date(year: 2025, month: 13, day: 1)
+        let invalid2 = Date(year: 2025, month: 2, day: 30)
+        let invalid3 = Date(year: 2025, month: 1, day: 1, hour: 25)
 
         #expect(invalid1 == nil)
         #expect(invalid2 == nil)
         #expect(invalid3 == nil)
     }
 
-    // MARK: - Usage Examples - Date Arithmetic
-
     @Test
     func `Usage: Basic date arithmetic`() async throws {
         let date = Date(year: 2025, month: 2, day: 15)!
 
-        // Basic arithmetic
         let tomorrow = date + 1.day
         let lastWeek = date - 1.weekOfYear
         let nextMonth = date + 1.month
@@ -142,9 +121,8 @@ struct `Readme Verification` {
     func `Usage: Safe date arithmetic`() async throws {
         let date = Date(year: 2025, month: 1, day: 15)!
 
-        // Safe arithmetic (returns optionals)
-        let safeResult = date.adding(1.day)  // Date?
-        let safeSubtract = date.subtracting(1.weekOfYear)  // Date?
+        let safeResult = date.adding(1.day)
+        let safeSubtract = date.subtracting(1.weekOfYear)
 
         #expect(safeResult != nil)
         #expect(safeSubtract != nil)
@@ -154,7 +132,6 @@ struct `Readme Verification` {
     func `Usage: Complex date calculations`() async throws {
         let date = Date(year: 2025, month: 1, day: 1, hour: 0)!
 
-        // Complex calculations
         let complex = date + 1.year + 6.months + 2.days + 3.hours + 30.minutes
 
         #expect(complex.year == 2026)
@@ -164,11 +141,9 @@ struct `Readme Verification` {
         #expect(complex.minute == 30)
     }
 
-    // MARK: - Usage Examples - Integer Extensions
-
     @Test
     func `Usage: Time components`() async throws {
-        // Time components
+
         let _: DateComponents = 1.second
         let _: DateComponents = 30.seconds
         let _: DateComponents = 1.minute
@@ -188,26 +163,23 @@ struct `Readme Verification` {
 
     @Test
     func `Usage: Calendar components`() async throws {
-        // Calendar components
+
         let _: DateComponents = 1.weekday
         let _: DateComponents = 1.quarter
         let _: DateComponents = 1.weekOfMonth
         let _: DateComponents = 1.weekOfYear
-        let _: DateComponents = 1.weeksOfYear  // Plural form for weeks
+        let _: DateComponents = 1.weeksOfYear
 
         #expect(1.weekday.weekday == 1)
         #expect(1.quarter.quarter == 1)
     }
 
-    // MARK: - Usage Examples - Date Boundaries
-
     @Test
     func `Usage: Day boundaries`() async throws {
         let date = Date(year: 2025, month: 7, day: 26, hour: 15, minute: 30)!
 
-        // Day boundaries
-        let startOfDay = date.startOfDay  // 00:00:00
-        let endOfDay = date.endOfDay  // 23:59:59
+        let startOfDay = date.startOfDay
+        let endOfDay = date.endOfDay
 
         #expect(startOfDay.hour == 0)
         #expect(startOfDay.minute == 0)
@@ -220,7 +192,6 @@ struct `Readme Verification` {
     func `Usage: Week boundaries`() async throws {
         let date = Date(year: 2025, month: 7, day: 26)!
 
-        // Week boundaries
         let startOfWeek = date.startOfWeek
         let endOfWeek = date.endOfWeek
 
@@ -232,7 +203,6 @@ struct `Readme Verification` {
     func `Usage: Month boundaries`() async throws {
         let date = Date(year: 2025, month: 7, day: 26)!
 
-        // Month boundaries
         let startOfMonth = date.startOfMonth
         let endOfMonth = date.endOfMonth
         let firstDay = date.firstDayOfMonth
@@ -248,7 +218,6 @@ struct `Readme Verification` {
     func `Usage: Year boundaries`() async throws {
         let date = Date(year: 2025, month: 7, day: 26)!
 
-        // Year boundaries
         let startOfYear = date.startOfYear
         let endOfYear = date.endOfYear
 
@@ -258,13 +227,10 @@ struct `Readme Verification` {
         #expect(endOfYear.day == 31)
     }
 
-    // MARK: - Usage Examples - Date State Checks
-
     @Test
     func `Usage: Date state relative to today`() async throws {
         let date = Date()
 
-        // Relative to today
         let isToday = date.isToday
         let isTomorrow = (date + 1.day).isTomorrow
         let isYesterday = (date - 1.day).isYesterday
@@ -278,7 +244,6 @@ struct `Readme Verification` {
     func `Usage: Date state relative to current periods`() async throws {
         let date = Date()
 
-        // Relative to current periods
         let isThisWeek = date.isThisWeek
         let isThisMonth = date.isThisMonth
         let isThisYear = date.isThisYear
@@ -290,22 +255,18 @@ struct `Readme Verification` {
 
     @Test
     func `Usage: Weekend checks`() async throws {
-        let saturday = Date(year: 2025, month: 8, day: 2)!  // A Saturday
+        let saturday = Date(year: 2025, month: 8, day: 2)!
 
-        // Weekend checks
         let isWeekend = saturday.isWeekend
 
         #expect(isWeekend == true)
     }
-
-    // MARK: - Usage Examples - Date Comparisons
 
     @Test
     func `Usage: Date comparisons`() async throws {
         let date1 = Date(year: 2025, month: 1, day: 1)!
         let date2 = date1 + 1.day
 
-        // Readable comparisons
         let isAfter = date2.isAfter(date1)
         let isBefore = date1.isBefore(date2)
         let isSameDay = date1.isSameDay(as: date1)
@@ -315,18 +276,14 @@ struct `Readme Verification` {
         #expect(isSameDay == true)
     }
 
-    // MARK: - Usage Examples - Weekend & Business Days
-
     @Test
     func `Usage: Weekend handling`() async throws {
-        let saturday = Date(year: 2025, month: 8, day: 2)!  // A Saturday
+        let saturday = Date(year: 2025, month: 8, day: 2)!
 
-        // Weekend handling
         if saturday.isWeekend {
             let nextWorkday = saturday.ifWeekendThenNextWorkday()
             let prevWorkday = saturday.ifWeekendThenPreviousWorkday()
 
-            // These methods return Date (not optional)
             #expect(nextWorkday > saturday)
             #expect(prevWorkday < saturday)
         }
@@ -334,40 +291,31 @@ struct `Readme Verification` {
 
     @Test
     func `Usage: Business day calculations`() async throws {
-        let monday = Date(year: 2025, month: 7, day: 28)!  // A Monday
+        let monday = Date(year: 2025, month: 7, day: 28)!
 
-        // Business day calculations
         let fiveBusinessDaysLater = monday.addingBusinessDays(5)
         let fiveBusinessDaysEarlier = monday.addingBusinessDays(-5)
 
-        // These methods return Date (not optional)
         #expect(fiveBusinessDaysLater > monday)
         #expect(fiveBusinessDaysEarlier < monday)
     }
 
-    // MARK: - Usage Examples - Weekday Navigation
-
     @Test
     func `Usage: Weekday navigation`() async throws {
-        let date = Date(year: 2025, month: 7, day: 26)!  // A Saturday
+        let date = Date(year: 2025, month: 7, day: 26)!
 
-        // Navigate to specific weekdays (1=Sunday, 2=Monday, ..., 7=Saturday)
-        let nextMonday = try #require(date.next(2))  // Next Monday
-        let previousFriday = try #require(date.previous(6))  // Previous Friday
+        let nextMonday = try #require(date.next(2))
+        let previousFriday = try #require(date.previous(6))
 
-        // These methods return nil for weekday values outside 1...7
         #expect(nextMonday > date)
         #expect(previousFriday < date)
     }
-
-    // MARK: - Usage Examples - Time Calculations
 
     @Test
     func `Usage: Time calculations`() async throws {
         let startDate = Date(year: 2025, month: 1, day: 1)!
         let endDate = startDate + 10.days
 
-        // Calculate differences
         let daysBetween = startDate.daysBetween(endDate)
 
         #expect(daysBetween == 10)
@@ -378,17 +326,14 @@ struct `Readme Verification` {
         let birthDate = Date(year: 2000, month: 1, day: 1)!
         let someDate = Date(year: 2025, month: 1, day: 1)!
 
-        // Age calculations
         let ageAt = birthDate.age(at: someDate)
 
         #expect(ageAt == 25)
     }
 
-    // MARK: - Usage Examples - TimeInterval Extensions
-
     @Test
     func `Usage: Time Interval constants`() async throws {
-        // Constants
+
         #expect(TimeInterval.minute == 60)
         #expect(TimeInterval.hour == 3600)
         #expect(TimeInterval.day == 86400)
@@ -397,7 +342,7 @@ struct `Readme Verification` {
 
     @Test
     func `Usage: Time Interval conversions`() async throws {
-        // Conversions
+
         let twoHours: TimeInterval = 2.hours
         let thirtyMinutes: TimeInterval = 30.minutes
 
@@ -407,7 +352,7 @@ struct `Readme Verification` {
 
     @Test
     func `Usage: Time Interval as conversions`() async throws {
-        // As conversions
+
         let interval: TimeInterval = 7200
         let hours = interval.asHours
         let minutes = interval.asMinutes
@@ -418,11 +363,11 @@ struct `Readme Verification` {
 
     @Test
     func `Usage: Formatted duration`() async throws {
-        // Formatted duration
-        let duration1 = (30.0).formattedDuration  // "30s"
-        let duration2 = (90.0).formattedDuration  // "2m"
-        let duration3 = (3660.0).formattedDuration  // "1.0h"
-        let duration4 = (86500.0).formattedDuration  // "1.0d"
+
+        let duration1 = (30.0).formattedDuration
+        let duration2 = (90.0).formattedDuration
+        let duration3 = (3660.0).formattedDuration
+        let duration4 = (86500.0).formattedDuration
 
         #expect(duration1.contains("s"))
         #expect(duration2.contains("m"))
@@ -430,13 +375,10 @@ struct `Readme Verification` {
         #expect(duration4.contains("d"))
     }
 
-    // MARK: - Usage Examples - Relative Date Formatting
-
     @Test
     func `Usage: Relative date formatting past`() async throws {
         let now = Date()
 
-        // Past dates
         let pastDate = now - 2.hours
         let timeAgo = pastDate.timeAgoSince(now)
         let relativeFormatted = pastDate.relativeFormatted
@@ -449,7 +391,6 @@ struct `Readme Verification` {
     func `Usage: Relative date formatting future`() async throws {
         let now = Date()
 
-        // Future dates
         let futureDate = now + 3.days
         let timeUntil = futureDate.timeUntil(now)
         let relativeFormatted = futureDate.relativeFormatted
@@ -462,7 +403,6 @@ struct `Readme Verification` {
     func `Usage: Relative date formatting special cases`() async throws {
         let now = Date()
 
-        // Special cases
         let yesterday = now - 1.day
         let yesterdayFormatted = yesterday.relativeFormatted
 
@@ -473,13 +413,10 @@ struct `Readme Verification` {
         #expect(tomorrowFormatted == "tomorrow" || tomorrowFormatted.contains("hour"))
     }
 
-    // MARK: - Usage Examples - Date Component Access
-
     @Test
     func `Usage: Basic date components`() async throws {
         let date = Date(year: 2025, month: 7, day: 26, hour: 15, minute: 30)!
 
-        // Basic components
         #expect(date.year == 2025)
         #expect(date.month == 7)
         #expect(date.day == 26)
@@ -492,7 +429,6 @@ struct `Readme Verification` {
     func `Usage: Advanced date components`() async throws {
         let date = Date(year: 2025, month: 7, day: 26)!
 
-        // Advanced components
         let weekday = date.weekday
         let weekOfYear = date.weekOfYear
         let weekOfMonth = date.weekOfMonth
@@ -510,20 +446,16 @@ struct `Readme Verification` {
     func `Usage: Calendar and timezone info`() async throws {
         let date = Date(year: 2025, month: 7, day: 26)!
 
-        // Calendar & timezone info
         let calendarIdentifier = date.calendarIdentifier
         let timeZone = date.timeZone
 
-        // These properties return non-optional values
         #expect(calendarIdentifier == Calendar.current.identifier)
         #expect(timeZone == Calendar.current.timeZone)
     }
 
-    // MARK: - Usage Examples - DateComponents Arithmetic
-
     @Test
     func `Usage: Date Components combining`() async throws {
-        // Combine components
+
         let components = 1.day + 2.hours + 30.minutes
         let result = Date(year: 2025, month: 1, day: 1)! + components
 
@@ -534,7 +466,7 @@ struct `Readme Verification` {
 
     @Test
     func `Usage: Date Components multiplication`() async throws {
-        // Multiply components
+
         let threeDays = 1.day * 3
         let sixMonths = 1.month * 6
 
@@ -544,11 +476,9 @@ struct `Readme Verification` {
 
     @Test
     func `Usage: Date Components subtraction`() async throws {
-        // Subtract components - calculates date difference
+
         let difference = 2.weeksOfYear - 3.days
 
-        // Subtraction calculates the difference between dates
-        // 2 weeks - 3 days = 11 days net (which is 1 week + 4 days)
         #expect(difference.weekOfYear == 1)
         #expect(difference.day == 4)
     }
@@ -557,20 +487,16 @@ struct `Readme Verification` {
     func `Usage: Date Components negation`() async throws {
         let components = 1.day + 2.hours
 
-        // Negate components
         let negated = components.negated()
 
         #expect(negated.day == -1)
         #expect(negated.hour == -2)
     }
 
-    // MARK: - Usage Examples - DateComponents Validation
-
     @Test
     func `Usage: Date Components basic validation`() async throws {
         let components = DateComponents(year: 2025, month: 7, day: 26)
 
-        // Basic validation
         let isValid = components.isValid
 
         #expect(isValid == true)
@@ -580,7 +506,6 @@ struct `Readme Verification` {
     func `Usage: Date Components calendar validation`() async throws {
         let components = DateComponents(year: 2025, month: 7, day: 26)
 
-        // Calendar-specific validation
         let calendar = Calendar.current
         let isValid = components.isValid(for: calendar)
 
@@ -589,18 +514,16 @@ struct `Readme Verification` {
 
     @Test
     func `Usage: Date Components invalid examples`() async throws {
-        // Invalid examples
+
         let invalid = DateComponents(month: 13, day: 1)
         let isValid = invalid.isValid
 
         #expect(isValid == false)
     }
 
-    // MARK: - Usage Examples - Date Formatting
-
     @Test
     func `Usage: Date Formatter extensions`() async throws {
-        // DateFormatter extensions
+
         let formatter = DateFormatter.dateFormat("yyyy-MM-dd")
         let dateString = formatter.string(from: Date(year: 2025, month: 7, day: 26)!)
 
@@ -609,7 +532,7 @@ struct `Readme Verification` {
 
     @Test
     func `Usage: Format Style extensions`() async throws {
-        // FormatStyle extensions (iOS 15+)
+
         let date = Date(year: 2025, month: 7, day: 26)!
         let formatted = date.formatted(.dateFormat("MMM d, yyyy"))
 

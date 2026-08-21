@@ -1,11 +1,3 @@
-//
-//  Date.WeekdayNavigation Tests.swift
-//  DateExtensions Tests
-//
-//  Regression tests for fable-448 F-002: Date.next(_:) must not crash and
-//  Date.previous(_:) must not infinite-loop on weekday values outside 1-7.
-//
-
 import Dependencies
 import Dependencies_Test_Support
 import Foundation
