@@ -1,6 +1,6 @@
 description: The Foundation extensions × swift-dependencies integration — a calendar dependency value and the ambient-calendar date API.
 topics:
-  - foundations
+  - compositions
   - dependencies
   - calendar
   - date

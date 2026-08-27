@@ -1,9 +1,9 @@
 # swift-foundation-dependencies
 
-The calendar as a dependency value, and the ambient-calendar date API built on it, for [swift-dependencies](https://github.com/swift-foundations/swift-dependencies).
+The calendar as a dependency value, and the ambient-calendar date API built on it, for [swift-dependencies](https://github.com/swift-compositions/swift-dependencies).
 
 > The foundation-extensions × dependencies integration package. All date logic
-> lives in [swift-foundation-extensions](https://github.com/swift-primitives/swift-foundation-extensions),
+> lives in [swift-foundation-extensions](https://github.com/swift-molecules/swift-foundation-extensions),
 > which carries no package dependencies at all; this package supplies the
 > calendar and the zero-argument spelling that reads it.
 
@@ -47,7 +47,7 @@ date.startOfMonth
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/swift-foundations/swift-foundation-dependencies.git", branch: "main")
+    .package(url: "https://github.com/swift-compositions/swift-foundation-dependencies.git", branch: "main")
 ]
 ```
 
