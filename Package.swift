@@ -2,21 +2,6 @@
 
 import PackageDescription
 
-extension String {
-    static let foundationDependencies: Self = "Foundation Dependencies"
-}
-
-extension Target.Dependency {
-    static var foundationDateExtensions: Self {
-        .product(name: "Foundation Date Extensions", package: "swift-foundation-extensions")
-    }
-    static var dependencies: Self { .product(name: "Dependencies", package: "swift-dependencies") }
-    static var dependenciesTestSupport: Self {
-        .product(name: "Dependencies Test Support", package: "swift-dependencies")
-    }
-    static var foundationDependencies: Self { .target(name: .foundationDependencies) }
-}
-
 let package = Package(
     name: "swift-foundation-dependencies",
     platforms: [
@@ -26,7 +11,7 @@ let package = Package(
         .watchOS(.v27),
     ],
     products: [
-        .library(name: .foundationDependencies, targets: [.foundationDependencies])
+        .library(name: "Foundation Dependencies", targets: ["Foundation Dependencies"])
     ],
     dependencies: [
         .package(
@@ -40,20 +25,19 @@ let package = Package(
     ],
     targets: [
         .target(
-            name: .foundationDependencies,
+            name: "Foundation Dependencies",
             dependencies: [
-                .foundationDateExtensions,
-                .dependencies,
+                .product(name: "Foundation Date Extensions", package: "swift-foundation-extensions"),
+                .product(name: "Dependencies", package: "swift-dependencies"),
             ]
         ),
         .testTarget(
-            name: .foundationDependencies.tests,
+            name: "Foundation Dependencies Tests",
             dependencies: [
-                .foundationDependencies,
-                .dependenciesTestSupport,
+                .target(name: "Foundation Dependencies"),
+                .product(name: "Dependencies Test Support", package: "swift-dependencies"),
             ]
         ),
     ]
 )
 
-extension String { var tests: Self { self + " Tests" } }
