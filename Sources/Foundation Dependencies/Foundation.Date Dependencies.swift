@@ -240,37 +240,37 @@ extension Date {
         return startOfDay(in: calendar)
     }
 
-    public var endOfDay: Date {
+    public var endOfDay: Date? {
         @Dependency(\.calendar) var calendar
         return endOfDay(in: calendar)
     }
 
-    public var startOfWeek: Date {
+    public var startOfWeek: Date? {
         @Dependency(\.calendar) var calendar
         return startOfWeek(in: calendar)
     }
 
-    public var endOfWeek: Date {
+    public var endOfWeek: Date? {
         @Dependency(\.calendar) var calendar
         return endOfWeek(in: calendar)
     }
 
-    public var startOfMonth: Date {
+    public var startOfMonth: Date? {
         @Dependency(\.calendar) var calendar
         return startOfMonth(in: calendar)
     }
 
-    public var endOfMonth: Date {
+    public var endOfMonth: Date? {
         @Dependency(\.calendar) var calendar
         return endOfMonth(in: calendar)
     }
 
-    public var startOfYear: Date {
+    public var startOfYear: Date? {
         @Dependency(\.calendar) var calendar
         return startOfYear(in: calendar)
     }
 
-    public var endOfYear: Date {
+    public var endOfYear: Date? {
         @Dependency(\.calendar) var calendar
         return endOfYear(in: calendar)
     }
