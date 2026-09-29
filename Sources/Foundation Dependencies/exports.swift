@@ -1,2 +1,2 @@
 @_exported import Dependencies
-@_exported import Foundation_Date_Extensions
+@_exported import FoundationEssentials_Extensions

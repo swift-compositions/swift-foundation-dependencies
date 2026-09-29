@@ -1,6 +1,6 @@
 import Dependencies
 import Foundation
-import Foundation_Date_Extensions
+import FoundationEssentials_Extensions
 
 extension DateComponents {
 

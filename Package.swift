@@ -5,10 +5,11 @@ import PackageDescription
 let package = Package(
     name: "swift-foundation-dependencies",
     platforms: [
-        .iOS(.v27),
         .macOS(.v27),
+        .iOS(.v27),
         .tvOS(.v27),
         .watchOS(.v27),
+        .visionOS(.v27),
     ],
     products: [
         .library(name: "Foundation Dependencies", targets: ["Foundation Dependencies"])
@@ -27,7 +28,7 @@ let package = Package(
         .target(
             name: "Foundation Dependencies",
             dependencies: [
-                .product(name: "Foundation Date Extensions", package: "swift-foundation-extensions"),
+                .product(name: "FoundationEssentials Extensions", package: "swift-foundation-extensions"),
                 .product(name: "Dependencies", package: "swift-dependencies"),
             ]
         ),
