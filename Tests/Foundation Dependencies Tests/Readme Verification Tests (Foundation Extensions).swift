@@ -1,6 +1,7 @@
 import Dependencies
 import Dependencies_Test_Support
 import Foundation_Dependencies
+import Standard_Library_Extensions
 import Testing
 
 @Suite(.dependency(\.calendar, Calendar.current))
@@ -34,9 +35,8 @@ struct `Readme Verification (Foundation Extensions)` {
     func `Quick Start: Date boundaries`() async throws {
 
         let startOfDay = Date().startOfDay
-        let endOfMonth = Date().endOfMonth
-        let startOfYear = Date().startOfYear
-
+        let endOfMonth = try #require(Date().endOfMonth)
+        let startOfYear = try #require(Date().startOfYear)
         #expect(startOfDay.hour == 0)
         #expect(startOfDay.minute == 0)
         #expect(endOfMonth > Date())
@@ -66,7 +66,7 @@ struct `Readme Verification (Foundation Extensions)` {
     }
 
     @Test
-    func `Quick Start: Safe array subscripting`() async throws {
+    func `Quick Start: safe subscripting from Standard Library Extensions`() async throws {
 
         let array = [1, 2, 3]
         let value = array[safe: 5]
@@ -167,8 +167,7 @@ struct `Readme Verification (Foundation Extensions)` {
         let date = Date()
 
         let startOfDay = date.startOfDay
-        let endOfDay = date.endOfDay
-
+        let endOfDay = try #require(date.endOfDay)
         #expect(startOfDay.hour == 0)
         #expect(startOfDay.minute == 0)
         #expect(endOfDay > startOfDay)
@@ -178,9 +177,8 @@ struct `Readme Verification (Foundation Extensions)` {
     func `Usage: Week boundaries`() async throws {
 
         let date = Date()
-        let startOfWeek = date.startOfWeek
-        let endOfWeek = date.endOfWeek
-
+        let startOfWeek = try #require(date.startOfWeek)
+        let endOfWeek = try #require(date.endOfWeek)
         #expect(startOfWeek <= date)
         #expect(endOfWeek >= date)
     }
@@ -189,8 +187,8 @@ struct `Readme Verification (Foundation Extensions)` {
     func `Usage: Month boundaries`() async throws {
 
         let date = Date()
-        let startOfMonth = date.startOfMonth
-        let endOfMonth = date.endOfMonth
+        let startOfMonth = try #require(date.startOfMonth)
+        let endOfMonth = try #require(date.endOfMonth)
         let firstDay = try #require(date.firstDayOfMonth)
         let lastDay = try #require(date.lastDayOfMonth)
 
@@ -204,9 +202,8 @@ struct `Readme Verification (Foundation Extensions)` {
     func `Usage: Year boundaries`() async throws {
 
         let date = Date()
-        let startOfYear = date.startOfYear
-        let endOfYear = date.endOfYear
-
+        let startOfYear = try #require(date.startOfYear)
+        let endOfYear = try #require(date.endOfYear)
         #expect(startOfYear <= date)
         #expect(endOfYear >= date)
         #expect(startOfYear.month == 1)
@@ -491,10 +488,9 @@ struct `Readme Verification (Foundation Extensions)` {
     }
 
     @Test
-    func `Usage: Date Formatter extensions`() async throws {
+    func `Usage: date format style`() async throws {
 
-        let formatter = DateFormatter.dateFormat("yyyy-MM-dd")
-        let dateString = formatter.string(from: Date())
+        let dateString = Date().formatted(.dateFormat("yyyy-MM-dd"))
 
         #expect(dateString.count == 10)
         #expect(dateString.contains("-"))

@@ -23,6 +23,10 @@ let package = Package(
             url: "https://github.com/swift-compositions/swift-dependencies.git",
             branch: "main"
         ),
+        .package(
+            url: "https://github.com/swift-atoms/swift-standard-library-extensions.git",
+            branch: "main"
+        ),
     ],
     targets: [
         .target(
@@ -37,6 +41,7 @@ let package = Package(
             dependencies: [
                 .target(name: "Foundation Dependencies"),
                 .product(name: "Dependencies Test Support", package: "swift-dependencies"),
+                .product(name: "Standard Library Extensions", package: "swift-standard-library-extensions"),
             ]
         ),
     ]

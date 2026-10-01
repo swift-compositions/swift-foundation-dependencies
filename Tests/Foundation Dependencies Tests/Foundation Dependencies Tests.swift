@@ -420,26 +420,23 @@ struct Test {
     }
 
     @Suite
-    struct `DateFormatter Extensions` {
+    struct `Date Format Style` {
 
         @Test
-        func `Date Formatter date Format method works correctly`() async throws {
-            let formatter = DateFormatter.dateFormat("yyyy-MM-dd")
+        func `date format style formats a pattern`() async throws {
             let testDate = Date(year: 2025, month: 7, day: 26)!
 
-            let formatted = formatter.string(from: testDate)
+            let formatted = testDate.formatted(.dateFormat("yyyy-MM-dd"))
             #expect(formatted == "2025-07-26")
         }
 
         @Test
-        func `Date Formatter handles different formats`() async throws {
+        func `date format style handles different patterns`() async throws {
             let testDate = Date(year: 2025, month: 7, day: 26, hour: 15, minute: 30)!
 
-            let dateFormatter = DateFormatter.dateFormat("MM/dd/yyyy")
-            #expect(dateFormatter.string(from: testDate) == "07/26/2025")
+            #expect(testDate.formatted(.dateFormat("MM/dd/yyyy")) == "07/26/2025")
 
-            let timeFormatter = DateFormatter.dateFormat("HH:mm")
-            #expect(timeFormatter.string(from: testDate) == "15:30")
+            #expect(testDate.formatted(.dateFormat("HH:mm")) == "15:30")
         }
     }
 
@@ -448,19 +445,17 @@ struct Test {
 
         @Test
         func `String Date Format works correctly`() async throws {
-            let format = StringDateFormat.dateFormat("yyyy-MM-dd")
             let testDate = Date(year: 2025, month: 7, day: 26)!
 
-            let formatted = testDate.formatted(format)
+            let formatted = testDate.formatted(.dateFormat("yyyy-MM-dd"))
             #expect(formatted == "2025-07-26")
         }
 
         @Test
         func `String Date Format handles complex patterns`() async throws {
-            let format = StringDateFormat.dateFormat("EEEE, MMMM d, yyyy 'at' h:mm a")
             let testDate = Date(year: 2025, month: 7, day: 26, hour: 15, minute: 30)!
 
-            let formatted = testDate.formatted(format)
+            let formatted = testDate.formatted(.dateFormat("EEEE, MMMM d, yyyy 'at' h:mm a"))
             #expect(formatted.contains("2025"))
             #expect(formatted.contains("July"))
             #expect(formatted.contains("26"))
@@ -545,7 +540,7 @@ struct Test {
             #expect(startOfDay.minute == 0)
             #expect(startOfDay.second == 0)
 
-            let endOfDay = midDay.endOfDay
+            let endOfDay = try #require(midDay.endOfDay)
             #expect(endOfDay.year == 2025)
             #expect(endOfDay.month == 7)
             #expect(endOfDay.day == 26)
@@ -558,9 +553,8 @@ struct Test {
         func `Start and end of week work correctly`() async throws {
             let midWeek = Date(year: 2025, month: 7, day: 30)!
 
-            let startOfWeek = midWeek.startOfWeek
-            let endOfWeek = midWeek.endOfWeek
-
+            let startOfWeek = try #require(midWeek.startOfWeek)
+            let endOfWeek = try #require(midWeek.endOfWeek)
             #expect(startOfWeek <= midWeek)
             #expect(endOfWeek >= midWeek)
             #expect(startOfWeek < endOfWeek)
@@ -570,7 +564,7 @@ struct Test {
         func `Start and end of month work correctly`() async throws {
             let midMonth = Date(year: 2025, month: 7, day: 15)!
 
-            let startOfMonth = midMonth.startOfMonth
+            let startOfMonth = try #require(midMonth.startOfMonth)
             #expect(startOfMonth.year == 2025)
             #expect(startOfMonth.month == 7)
             #expect(startOfMonth.day == 1)
@@ -578,7 +572,7 @@ struct Test {
             #expect(startOfMonth.minute == 0)
             #expect(startOfMonth.second == 0)
 
-            let endOfMonth = midMonth.endOfMonth
+            let endOfMonth = try #require(midMonth.endOfMonth)
             #expect(endOfMonth.year == 2025)
             #expect(endOfMonth.month == 7)
             #expect(endOfMonth.day == 31)
@@ -591,7 +585,7 @@ struct Test {
         func `Start and end of year work correctly`() async throws {
             let midYear = Date(year: 2025, month: 6, day: 15)!
 
-            let startOfYear = midYear.startOfYear
+            let startOfYear = try #require(midYear.startOfYear)
             #expect(startOfYear.year == 2025)
             #expect(startOfYear.month == 1)
             #expect(startOfYear.day == 1)
@@ -599,7 +593,7 @@ struct Test {
             #expect(startOfYear.minute == 0)
             #expect(startOfYear.second == 0)
 
-            let endOfYear = midYear.endOfYear
+            let endOfYear = try #require(midYear.endOfYear)
             #expect(endOfYear.year == 2025)
             #expect(endOfYear.month == 12)
             #expect(endOfYear.day == 31)
@@ -616,8 +610,7 @@ struct Test {
         func `Today state check works correctly`() async throws {
             let now = Date()
             let todayMorning = now.startOfDay
-            let todayEvening = now.endOfDay
-
+            let todayEvening = try #require(now.endOfDay)
             #expect(now.isToday)
             #expect(todayMorning.isToday)
             #expect(todayEvening.isToday)
@@ -647,9 +640,8 @@ struct Test {
         @Test
         func `This week state check works correctly`() async throws {
             let now = Date()
-            let thisWeekStart = now.startOfWeek
-            let thisWeekEnd = now.endOfWeek
-
+            let thisWeekStart = try #require(now.startOfWeek)
+            let thisWeekEnd = try #require(now.endOfWeek)
             #expect(now.isThisWeek)
             #expect(thisWeekStart.isThisWeek)
             #expect(thisWeekEnd.isThisWeek)
