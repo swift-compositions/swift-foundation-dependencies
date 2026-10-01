@@ -181,17 +181,17 @@ extension Date {
         return isWeekend(in: calendar)
     }
 
-    public var nextWeekday: Date {
+    public var nextWeekday: Date? {
         @Dependency(\.calendar) var calendar
         return nextWeekday(in: calendar)
     }
 
-    public func ifWeekendThenNextWorkday() -> Date {
+    public func ifWeekendThenNextWorkday() -> Date? {
         @Dependency(\.calendar) var calendar
         return ifWeekendThenNextWorkday(in: calendar)
     }
 
-    public func ifWeekendThenPreviousWorkday() -> Date {
+    public func ifWeekendThenPreviousWorkday() -> Date? {
         @Dependency(\.calendar) var calendar
         return ifWeekendThenPreviousWorkday(in: calendar)
     }
@@ -212,12 +212,12 @@ extension Date {
 
 extension Date {
 
-    public func daysBetween(_ date: Date) -> Int {
+    public func daysBetween(_ date: Date) -> Int? {
         @Dependency(\.calendar) var calendar
         return daysBetween(date, in: calendar)
     }
 
-    public func addingBusinessDays(_ businessDays: Int) -> Date {
+    public func addingBusinessDays(_ businessDays: Int) -> Date? {
         @Dependency(\.calendar) var calendar
         return addingBusinessDays(businessDays, in: calendar)
     }
@@ -225,12 +225,12 @@ extension Date {
 
 extension Date {
 
-    public var firstDayOfMonth: Date {
+    public var firstDayOfMonth: Date? {
         @Dependency(\.calendar) var calendar
         return firstDayOfMonth(in: calendar)
     }
 
-    public var lastDayOfMonth: Date {
+    public var lastDayOfMonth: Date? {
         @Dependency(\.calendar) var calendar
         return lastDayOfMonth(in: calendar)
     }
@@ -278,7 +278,7 @@ extension Date {
 
 extension Date {
 
-    public func age(at referenceDate: Date = Date()) -> Int {
+    public func age(at referenceDate: Date = Date()) -> Int? {
         @Dependency(\.calendar) var calendar
         return age(at: referenceDate, in: calendar)
     }

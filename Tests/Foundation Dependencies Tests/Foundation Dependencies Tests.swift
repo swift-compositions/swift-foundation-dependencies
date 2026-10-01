@@ -226,7 +226,7 @@ struct Test {
         @Test
         func `Next weekday calculation works correctly`() async throws {
             let friday = Date(year: 2025, month: 7, day: 25)!
-            let nextWeekday = friday.nextWeekday
+            let nextWeekday = try #require(friday.nextWeekday)
 
             #expect(nextWeekday.weekday == 2)
             #expect(!nextWeekday.isWeekend)
@@ -236,11 +236,11 @@ struct Test {
         func `Weekend adjustment methods work correctly`() async throws {
             let saturday = Date(year: 2025, month: 7, day: 26)!
 
-            let nextWorkday = saturday.ifWeekendThenNextWorkday()
+            let nextWorkday = try #require(saturday.ifWeekendThenNextWorkday())
             #expect(!nextWorkday.isWeekend)
             #expect(nextWorkday.weekday == 2)
 
-            let previousWorkday = saturday.ifWeekendThenPreviousWorkday()
+            let previousWorkday = try #require(saturday.ifWeekendThenPreviousWorkday())
             #expect(!previousWorkday.isWeekend)
             #expect(previousWorkday.weekday == 6)
         }
@@ -276,10 +276,10 @@ struct Test {
             let startDate = Date(year: 2025, month: 1, day: 1)!
             let endDate = Date(year: 2025, month: 1, day: 11)!
 
-            let daysBetween = startDate.daysBetween(endDate)
+            let daysBetween = try #require(startDate.daysBetween(endDate))
             #expect(daysBetween == 10)
 
-            let reverseDays = endDate.daysBetween(startDate)
+            let reverseDays = try #require(endDate.daysBetween(startDate))
             #expect(reverseDays == -10)
         }
 
@@ -287,10 +287,10 @@ struct Test {
         func `Business days calculation works correctly`() async throws {
             let monday = Date(year: 2025, month: 7, day: 28)!
 
-            let fiveBusinessDaysLater = monday.addingBusinessDays(5)
+            let fiveBusinessDaysLater = try #require(monday.addingBusinessDays(5))
             #expect(fiveBusinessDaysLater.weekday == 2)
 
-            let fiveBusinessDaysEarlier = monday.addingBusinessDays(-5)
+            let fiveBusinessDaysEarlier = try #require(monday.addingBusinessDays(-5))
             #expect(fiveBusinessDaysEarlier.weekday == 2)
         }
 
@@ -298,7 +298,7 @@ struct Test {
         func `Business days skip weekends correctly`() async throws {
             let friday = Date(year: 2025, month: 7, day: 25)!
 
-            let oneBusinessDayLater = friday.addingBusinessDays(1)
+            let oneBusinessDayLater = try #require(friday.addingBusinessDays(1))
             #expect(oneBusinessDayLater.weekday == 2)
             #expect(!oneBusinessDayLater.isWeekend)
         }
@@ -310,7 +310,7 @@ struct Test {
         @Test
         func `First day of month calculation works correctly`() async throws {
             let midMonth = Date(year: 2025, month: 7, day: 15)!
-            let firstDay = midMonth.firstDayOfMonth
+            let firstDay = try #require(midMonth.firstDayOfMonth)
 
             #expect(firstDay.year == 2025)
             #expect(firstDay.month == 7)
@@ -320,7 +320,7 @@ struct Test {
         @Test
         func `Last day of month calculation works correctly`() async throws {
             let midMonth = Date(year: 2025, month: 7, day: 15)!
-            let lastDay = midMonth.lastDayOfMonth
+            let lastDay = try #require(midMonth.lastDayOfMonth)
 
             #expect(lastDay.year == 2025)
             #expect(lastDay.month == 7)
@@ -330,11 +330,11 @@ struct Test {
         @Test
         func `February last day calculation handles leap years`() async throws {
             let feb2024 = Date(year: 2024, month: 2, day: 15)!
-            let lastDayLeap = feb2024.lastDayOfMonth
+            let lastDayLeap = try #require(feb2024.lastDayOfMonth)
             #expect(lastDayLeap.day == 29)
 
             let feb2025 = Date(year: 2025, month: 2, day: 15)!
-            let lastDayRegular = feb2025.lastDayOfMonth
+            let lastDayRegular = try #require(feb2025.lastDayOfMonth)
             #expect(lastDayRegular.day == 28)
         }
     }
@@ -347,7 +347,7 @@ struct Test {
             let birthDate = Date(year: 2000, month: 1, day: 1)!
             let referenceDate = Date(year: 2025, month: 1, day: 1)!
 
-            let age = birthDate.age(at: referenceDate)
+            let age = try #require(birthDate.age(at: referenceDate))
             #expect(age == 25)
         }
 
@@ -356,14 +356,14 @@ struct Test {
             let birthDate = Date(year: 2000, month: 12, day: 31)!
             let referenceDate = Date(year: 2025, month: 1, day: 1)!
 
-            let age = birthDate.age(at: referenceDate)
+            let age = try #require(birthDate.age(at: referenceDate))
             #expect(age == 24)
         }
 
         @Test
         func `Age calculation with current date`() async throws {
             let birthDate = Date(year: 2000, month: 1, day: 1)!
-            let age = birthDate.age()
+            let age = try #require(birthDate.age())
 
             #expect(age >= 25)
         }

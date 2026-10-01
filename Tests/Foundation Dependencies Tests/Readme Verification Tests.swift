@@ -205,8 +205,8 @@ struct `Readme Verification` {
 
         let startOfMonth = date.startOfMonth
         let endOfMonth = date.endOfMonth
-        let firstDay = date.firstDayOfMonth
-        let lastDay = date.lastDayOfMonth
+        let firstDay = try #require(date.firstDayOfMonth)
+        let lastDay = try #require(date.lastDayOfMonth)
 
         #expect(startOfMonth.day == 1)
         #expect(endOfMonth.month == 7)
@@ -281,8 +281,8 @@ struct `Readme Verification` {
         let saturday = Date(year: 2025, month: 8, day: 2)!
 
         if saturday.isWeekend {
-            let nextWorkday = saturday.ifWeekendThenNextWorkday()
-            let prevWorkday = saturday.ifWeekendThenPreviousWorkday()
+            let nextWorkday = try #require(saturday.ifWeekendThenNextWorkday())
+            let prevWorkday = try #require(saturday.ifWeekendThenPreviousWorkday())
 
             #expect(nextWorkday > saturday)
             #expect(prevWorkday < saturday)
@@ -293,8 +293,8 @@ struct `Readme Verification` {
     func `Usage: Business day calculations`() async throws {
         let monday = Date(year: 2025, month: 7, day: 28)!
 
-        let fiveBusinessDaysLater = monday.addingBusinessDays(5)
-        let fiveBusinessDaysEarlier = monday.addingBusinessDays(-5)
+        let fiveBusinessDaysLater = try #require(monday.addingBusinessDays(5))
+        let fiveBusinessDaysEarlier = try #require(monday.addingBusinessDays(-5))
 
         #expect(fiveBusinessDaysLater > monday)
         #expect(fiveBusinessDaysEarlier < monday)
@@ -316,7 +316,7 @@ struct `Readme Verification` {
         let startDate = Date(year: 2025, month: 1, day: 1)!
         let endDate = startDate + 10.days
 
-        let daysBetween = startDate.daysBetween(endDate)
+        let daysBetween = try #require(startDate.daysBetween(endDate))
 
         #expect(daysBetween == 10)
     }
@@ -326,7 +326,7 @@ struct `Readme Verification` {
         let birthDate = Date(year: 2000, month: 1, day: 1)!
         let someDate = Date(year: 2025, month: 1, day: 1)!
 
-        let ageAt = birthDate.age(at: someDate)
+        let ageAt = try #require(birthDate.age(at: someDate))
 
         #expect(ageAt == 25)
     }

@@ -192,8 +192,8 @@ struct `Readme Verification (Foundation Extensions)` {
         let date = Date()
         let startOfMonth = date.startOfMonth
         let endOfMonth = date.endOfMonth
-        let firstDay = date.firstDayOfMonth
-        let lastDay = date.lastDayOfMonth
+        let firstDay = try #require(date.firstDayOfMonth)
+        let lastDay = try #require(date.lastDayOfMonth)
 
         #expect(startOfMonth <= date)
         #expect(endOfMonth >= date)
@@ -256,14 +256,14 @@ struct `Readme Verification (Foundation Extensions)` {
         let date = Date()
 
         if date.isWeekend {
-            let nextWorkday = date.ifWeekendThenNextWorkday()
-            let prevWorkday = date.ifWeekendThenPreviousWorkday()
+            let nextWorkday = try #require(date.ifWeekendThenNextWorkday())
+            let prevWorkday = try #require(date.ifWeekendThenPreviousWorkday())
 
             #expect(!nextWorkday.isWeekend)
             #expect(!prevWorkday.isWeekend)
         }
 
-        let nextWeekday = date.nextWeekday
+        let nextWeekday = try #require(date.nextWeekday)
         #expect(!nextWeekday.isWeekend)
     }
 
@@ -271,8 +271,8 @@ struct `Readme Verification (Foundation Extensions)` {
     func `Usage: Business day calculations`() async throws {
 
         let date = Date()
-        let fiveBusinessDaysLater = date.addingBusinessDays(5)
-        let fiveBusinessDaysEarlier = date.addingBusinessDays(-5)
+        let fiveBusinessDaysLater = try #require(date.addingBusinessDays(5))
+        let fiveBusinessDaysEarlier = try #require(date.addingBusinessDays(-5))
 
         #expect(fiveBusinessDaysLater > date)
         #expect(fiveBusinessDaysEarlier < date)
@@ -296,7 +296,7 @@ struct `Readme Verification (Foundation Extensions)` {
         let startDate = Date()
         let endDate = Date() + 10.days
 
-        let daysBetween = startDate.daysBetween(endDate)
+        let daysBetween = try #require(startDate.daysBetween(endDate))
 
         #expect(daysBetween == 10)
     }
@@ -305,8 +305,8 @@ struct `Readme Verification (Foundation Extensions)` {
     func `Usage: Age calculations`() async throws {
 
         let birthDate = Date(year: 2000, month: 1, day: 1)!
-        let age = birthDate.age()
-        let ageAt = birthDate.age(at: Date(year: 2025, month: 1, day: 1)!)
+        let age = try #require(birthDate.age())
+        let ageAt = try #require(birthDate.age(at: Date(year: 2025, month: 1, day: 1)!))
 
         #expect(age > 20)
         #expect(ageAt == 25)
