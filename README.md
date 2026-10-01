@@ -91,6 +91,21 @@ date.addingBusinessDays(3)
 date.relativeFormatted
 ```
 
+### Optional results
+
+`nextWeekday`, `ifWeekendThenNextWorkday()`, `ifWeekendThenPreviousWorkday()`,
+`daysBetween(_:)`, `addingBusinessDays(_:)`, `firstDayOfMonth`, `lastDayOfMonth`
+and `age(at:)` return `Date?` or `Int?`. They forward the result of the matching
+explicit-calendar helper in FoundationEssentials Extensions, which returns `nil`
+when the calendar cannot compute the date or component. This is a source change
+from the earlier non-optional signatures; unwrap where you use the value:
+
+```swift
+if let days = date.daysBetween(tomorrow) {
+    print(days)
+}
+```
+
 ## Overriding the calendar
 
 Every member above reads `\.calendar`, so a single override redirects the whole
