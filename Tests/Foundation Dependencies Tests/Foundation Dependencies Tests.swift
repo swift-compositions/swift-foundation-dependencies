@@ -543,10 +543,14 @@ struct Test {
             let endOfDay = try #require(midDay.endOfDay)
             #expect(endOfDay.year == 2025)
             #expect(endOfDay.month == 7)
-            #expect(endOfDay.day == 26)
-            #expect(endOfDay.hour == 23)
-            #expect(endOfDay.minute == 59)
-            #expect(endOfDay.second == 59)
+            #expect(endOfDay.day == 27)
+            #expect(endOfDay.hour == 0)
+            #expect(endOfDay.minute == 0)
+            #expect(endOfDay.second == 0)
+            #expect(endOfDay == (midDay + 1.day).startOfDay)
+            #expect(startOfDay <= midDay)
+            #expect(midDay < endOfDay)
+            #expect(!endOfDay.isSameDay(as: midDay))
         }
 
         @Test
@@ -574,11 +578,15 @@ struct Test {
 
             let endOfMonth = try #require(midMonth.endOfMonth)
             #expect(endOfMonth.year == 2025)
-            #expect(endOfMonth.month == 7)
-            #expect(endOfMonth.day == 31)
-            #expect(endOfMonth.hour == 23)
-            #expect(endOfMonth.minute == 59)
-            #expect(endOfMonth.second == 59)
+            #expect(endOfMonth.month == 8)
+            #expect(endOfMonth.day == 1)
+            #expect(endOfMonth.hour == 0)
+            #expect(endOfMonth.minute == 0)
+            #expect(endOfMonth.second == 0)
+            #expect(endOfMonth == startOfMonth + 1.month)
+            #expect(startOfMonth <= midMonth)
+            #expect(midMonth < endOfMonth)
+            #expect(endOfMonth.month != midMonth.month)
         }
 
         @Test
@@ -594,12 +602,16 @@ struct Test {
             #expect(startOfYear.second == 0)
 
             let endOfYear = try #require(midYear.endOfYear)
-            #expect(endOfYear.year == 2025)
-            #expect(endOfYear.month == 12)
-            #expect(endOfYear.day == 31)
-            #expect(endOfYear.hour == 23)
-            #expect(endOfYear.minute == 59)
-            #expect(endOfYear.second == 59)
+            #expect(endOfYear.year == 2026)
+            #expect(endOfYear.month == 1)
+            #expect(endOfYear.day == 1)
+            #expect(endOfYear.hour == 0)
+            #expect(endOfYear.minute == 0)
+            #expect(endOfYear.second == 0)
+            #expect(endOfYear == startOfYear + 1.year)
+            #expect(startOfYear <= midYear)
+            #expect(midYear < endOfYear)
+            #expect(endOfYear.year != midYear.year)
         }
     }
 
@@ -610,10 +622,12 @@ struct Test {
         func `Today state check works correctly`() async throws {
             let now = Date()
             let todayMorning = now.startOfDay
-            let todayEvening = try #require(now.endOfDay)
+            let todayNoon = todayMorning + 12.hours
+            let nextDayStart = try #require(now.endOfDay)
             #expect(now.isToday)
             #expect(todayMorning.isToday)
-            #expect(todayEvening.isToday)
+            #expect(todayNoon.isToday)
+            #expect(!nextDayStart.isToday)
 
             let yesterday = now - 1.day
             #expect(!yesterday.isToday)
@@ -641,10 +655,12 @@ struct Test {
         func `This week state check works correctly`() async throws {
             let now = Date()
             let thisWeekStart = try #require(now.startOfWeek)
-            let thisWeekEnd = try #require(now.endOfWeek)
+            let nextWeekStart = try #require(now.endOfWeek)
+            let thisWeekInterior = thisWeekStart + 1.day
             #expect(now.isThisWeek)
             #expect(thisWeekStart.isThisWeek)
-            #expect(thisWeekEnd.isThisWeek)
+            #expect(thisWeekInterior.isThisWeek)
+            #expect(!nextWeekStart.isThisWeek)
 
             let nextWeek = now + 1.weeks
             #expect(!nextWeek.isThisWeek)

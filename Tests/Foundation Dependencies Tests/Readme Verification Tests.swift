@@ -44,7 +44,9 @@ struct `Readme Verification` {
         let startOfYear = try #require(date.startOfYear)
         #expect(startOfDay.hour == 0)
         #expect(startOfDay.minute == 0)
-        #expect(endOfMonth.month == 7)
+        #expect(endOfMonth.month == 8)
+        #expect(endOfMonth.day == 1)
+        #expect(date < endOfMonth)
         #expect(startOfYear.month == 1)
     }
 
@@ -61,7 +63,13 @@ struct `Readme Verification` {
 
         let pastDate = now - 2.hours
         let relativeString = pastDate.relativeFormatted
-        #expect(relativeString.contains("hour"))
+        @Dependency(\.calendar) var calendar
+        let todayNoon = now.startOfDay + 12.hours
+        let todayTen = now.startOfDay + 10.hours
+        #expect(todayTen.relativeFormatted(in: calendar, now: todayNoon) == "2 hours ago")
+        let previousDayNoon = todayNoon - 1.day
+        #expect(previousDayNoon.relativeFormatted(in: calendar, now: todayNoon) == "yesterday")
+        #expect(relativeString == (calendar.isDateInYesterday(pastDate) ? "yesterday" : pastDate.timeAgoSince(now, in: calendar)))
 
         let futureDate = now + 3.days
         let futureString = futureDate.relativeFormatted
@@ -182,8 +190,12 @@ struct `Readme Verification` {
         #expect(startOfDay.hour == 0)
         #expect(startOfDay.minute == 0)
         #expect(startOfDay.second == 0)
-        #expect(endOfDay.hour == 23)
-        #expect(endOfDay.minute == 59)
+        #expect(endOfDay.day == 27)
+        #expect(endOfDay.hour == 0)
+        #expect(endOfDay.minute == 0)
+        #expect(startOfDay <= date)
+        #expect(date < endOfDay)
+        #expect(!endOfDay.isSameDay(as: date))
     }
 
     @Test
@@ -206,7 +218,10 @@ struct `Readme Verification` {
         let lastDay = try #require(date.lastDayOfMonth)
 
         #expect(startOfMonth.day == 1)
-        #expect(endOfMonth.month == 7)
+        #expect(endOfMonth.month == 8)
+        #expect(endOfMonth.day == 1)
+        #expect(startOfMonth <= date)
+        #expect(date < endOfMonth)
         #expect(firstDay.day == 1)
         #expect(lastDay.day == 31)
     }
@@ -219,8 +234,11 @@ struct `Readme Verification` {
         let endOfYear = try #require(date.endOfYear)
         #expect(startOfYear.month == 1)
         #expect(startOfYear.day == 1)
-        #expect(endOfYear.month == 12)
-        #expect(endOfYear.day == 31)
+        #expect(endOfYear.year == 2026)
+        #expect(endOfYear.month == 1)
+        #expect(endOfYear.day == 1)
+        #expect(startOfYear <= date)
+        #expect(date < endOfYear)
     }
 
     @Test
@@ -380,7 +398,13 @@ struct `Readme Verification` {
         let relativeFormatted = pastDate.relativeFormatted
 
         #expect(timeAgo.contains("hour"))
-        #expect(relativeFormatted.contains("hour"))
+        @Dependency(\.calendar) var calendar
+        let todayNoon = now.startOfDay + 12.hours
+        let todayTen = now.startOfDay + 10.hours
+        #expect(todayTen.relativeFormatted(in: calendar, now: todayNoon) == "2 hours ago")
+        let previousDayNoon = todayNoon - 1.day
+        #expect(previousDayNoon.relativeFormatted(in: calendar, now: todayNoon) == "yesterday")
+        #expect(relativeFormatted == (calendar.isDateInYesterday(pastDate) ? "yesterday" : pastDate.timeAgoSince(now, in: calendar)))
     }
 
     @Test

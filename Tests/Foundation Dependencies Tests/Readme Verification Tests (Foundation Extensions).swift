@@ -55,13 +55,20 @@ struct `Readme Verification (Foundation Extensions)` {
     @Test
     func `Quick Start: Relative formatting`() async throws {
 
-        let pastDate = Date() - 2.hours
+        let now = Date()
+        let pastDate = now - 2.hours
         let pastFormatted = pastDate.relativeFormatted
 
         let futureDate = Date() + 3.days
         let futureFormatted = futureDate.relativeFormatted
 
-        #expect(pastFormatted.contains("hour") || pastFormatted.contains("ago"))
+        @Dependency(\.calendar) var calendar
+        let todayNoon = now.startOfDay + 12.hours
+        let todayTen = now.startOfDay + 10.hours
+        #expect(todayTen.relativeFormatted(in: calendar, now: todayNoon) == "2 hours ago")
+        let previousDayNoon = todayNoon - 1.day
+        #expect(previousDayNoon.relativeFormatted(in: calendar, now: todayNoon) == "yesterday")
+        #expect(pastFormatted == (calendar.isDateInYesterday(pastDate) ? "yesterday" : pastDate.timeAgoSince(now, in: calendar)))
         #expect(futureFormatted.contains("day") || futureFormatted.contains("in"))
     }
 
@@ -355,7 +362,13 @@ struct `Readme Verification (Foundation Extensions)` {
         let relativeFormatted = pastDate.relativeFormatted
 
         #expect(timeAgo.contains("hour"))
-        #expect(relativeFormatted.contains("hour") || relativeFormatted.contains("ago"))
+        @Dependency(\.calendar) var calendar
+        let todayNoon = now.startOfDay + 12.hours
+        let todayTen = now.startOfDay + 10.hours
+        #expect(todayTen.relativeFormatted(in: calendar, now: todayNoon) == "2 hours ago")
+        let previousDayNoon = todayNoon - 1.day
+        #expect(previousDayNoon.relativeFormatted(in: calendar, now: todayNoon) == "yesterday")
+        #expect(relativeFormatted == (calendar.isDateInYesterday(pastDate) ? "yesterday" : pastDate.timeAgoSince(now, in: calendar)))
     }
 
     @Test
