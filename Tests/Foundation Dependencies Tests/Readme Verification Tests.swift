@@ -77,10 +77,10 @@ struct `Readme Verification` {
     }
 
     @Test
-    func `Quick Start: safe subscripting from Standard Library Extensions`() async throws {
+    func `Quick Start: element access from Standard Library Extensions`() async throws {
         let array = [1, 2, 3]
-        let value = array[safe: 5]
-        let validValue = array[safe: 1]
+        let value = array.element(at: 5)
+        let validValue = array.element(at: 1)
 
         #expect(value == nil)
         #expect(validValue == 2)
