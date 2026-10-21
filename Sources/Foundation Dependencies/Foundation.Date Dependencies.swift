@@ -20,12 +20,18 @@ extension Date {
 
 public func + (lhs: Date, rhs: DateComponents) -> Date {
     @Dependency(\.calendar) var calendar
-    return lhs.adding(rhs, in: calendar)!
+    guard let result = lhs.adding(rhs, in: calendar) else {
+        preconditionFailure("Adding date components \(rhs) to \(lhs) produced no date")
+    }
+    return result
 }
 
 public func - (lhs: Date, rhs: DateComponents) -> Date {
     @Dependency(\.calendar) var calendar
-    return lhs.subtracting(rhs, in: calendar)!
+    guard let result = lhs.subtracting(rhs, in: calendar) else {
+        preconditionFailure("Subtracting date components \(rhs) from \(lhs) produced no date")
+    }
+    return result
 }
 
 extension Date {
